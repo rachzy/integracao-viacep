@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const response = ctx.getResponse() as Response;
 
     function errorCallback({ message }: { message: string }) {
-      response.clearCookie('USER_ID', {
+      response.clearCookie('ACCOUNT_ID', {
         sameSite: 'none',
         secure: true,
         httpOnly: true,
@@ -35,9 +35,9 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException(message);
     }
 
-    const { USER_ID, SESSION_ID, SESSION_TOKEN } = request.cookies;
+    const { ACCOUNT_ID, SESSION_ID, SESSION_TOKEN } = request.cookies;
 
-    if (!USER_ID || !SESSION_ID || !SESSION_TOKEN) {
+    if (!ACCOUNT_ID || !SESSION_ID || !SESSION_TOKEN) {
       errorCallback({
         message: 'You have to be authenticated to access this resource!',
       });
@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const validSession = await this.sessionService.validateSession({
-      USER_ID,
+      ACCOUNT_ID,
       SESSION_ID,
       SESSION_TOKEN,
     });

@@ -35,14 +35,14 @@ export class SessionService {
   }
 
   async validateSession({
-    USER_ID,
+    ACCOUNT_ID,
     SESSION_ID,
     SESSION_TOKEN,
   }: CookieSessionDto): Promise<boolean> {
     const session = await this.sessionRepository.findOne({
       where: {
         _id: new ObjectId(SESSION_ID),
-        accountId: new ObjectId(USER_ID),
+        accountId: new ObjectId(ACCOUNT_ID),
         token: SESSION_TOKEN,
         valid: true,
       },
@@ -65,18 +65,18 @@ export class SessionService {
   }
 
   async destroySession({
-    USER_ID,
+    ACCOUNT_ID,
     SESSION_ID,
     SESSION_TOKEN,
   }: CookieSessionDto) {
-    if (!USER_ID || !SESSION_ID || !SESSION_TOKEN) {
+    if (!ACCOUNT_ID || !SESSION_ID || !SESSION_TOKEN) {
       throw new BadRequestException(
         `You don't have a currently active session`,
       );
     }
 
     const session = await this.sessionRepository.findOneBy({
-      accountId: new ObjectId(USER_ID),
+      accountId: new ObjectId(ACCOUNT_ID),
       _id: new ObjectId(SESSION_ID),
       token: SESSION_TOKEN,
     });

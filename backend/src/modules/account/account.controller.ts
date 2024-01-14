@@ -37,7 +37,7 @@ export class AccountController {
   @Get('getData')
   @UseGuards(AuthGuard)
   async getAccount(@Req() request: Request) {
-    const { USER_ID } = request.cookies;
-    return await this.accountService.findAccountById(USER_ID);
+    const { ACCOUNT_ID } = request.cookies;
+    return await this.accountService.findAccountById(ACCOUNT_ID);
   }
 }

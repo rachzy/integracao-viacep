@@ -15,21 +15,21 @@ export class UnauthGuard implements CanActivate {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest() as Request;
 
-    const { USER_ID, SESSION_ID, SESSION_TOKEN } = request.cookies;
+    const { ACCOUNT_ID, SESSION_ID, SESSION_TOKEN } = request.cookies;
 
-    if (!USER_ID && !SESSION_ID && !SESSION_TOKEN) {
+    if (!ACCOUNT_ID && !SESSION_ID && !SESSION_TOKEN) {
       return true;
     }
 
     const validSession = await this.sessionService.validateSession({
-      USER_ID,
+      ACCOUNT_ID,
       SESSION_ID,
       SESSION_TOKEN,
     });
 
     if (!validSession) {
       await this.sessionService.destroySession({
-        USER_ID,
+        ACCOUNT_ID,
         SESSION_ID,
         SESSION_TOKEN,
       });

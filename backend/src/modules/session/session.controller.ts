@@ -45,7 +45,7 @@ export class SessionController {
       account,
     );
 
-    response.cookie('USER_ID', account._id.toHexString(), {
+    response.cookie('ACCOUNT_ID', account._id.toHexString(), {
       sameSite: 'none',
       httpOnly: true,
       secure: true,
@@ -75,15 +75,15 @@ export class SessionController {
   @Delete('logout')
   @UseGuards(AuthGuard)
   async logout(@Req() request: Request, @Res() response: Response) {
-    const { USER_ID, SESSION_ID, SESSION_TOKEN } =
+    const { ACCOUNT_ID, SESSION_ID, SESSION_TOKEN } =
       request.cookies as CookieSessionDto;
     await this.sessionService.destroySession({
-      USER_ID,
+      ACCOUNT_ID,
       SESSION_ID,
       SESSION_TOKEN,
     });
 
-    response.clearCookie('USER_ID');
+    response.clearCookie('ACCOUNT_ID');
     response.clearCookie('SESSION_ID');
     response.clearCookie('SESSION_TOKEN');
 
