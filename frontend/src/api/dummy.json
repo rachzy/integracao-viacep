@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "65a412081e24e97e97562590",
+    "author": "65a412081e24e97e97562590",
+    "name": "Henrique",
+    "cpf": "13151190571",
+    "email": "henriqueferreira.fox@gmail.com",
+    "phone": "5534988914708",
+    "birthdate": "25/02/2006",
+    "address": {
+      "cep": "38740188",
+      "street": "Rua Cesário Alvim",
+      "number": 156,
+      "complement": "Do lado da árvore",
+      "neighborhood": "São Vicente",
+      "city": "Patrocínio",
+      "state": "Minas Gerais"
+    }
+  },
+  {
+    "_id": "65a4120e1e24e97e97562591",
+    "author": "65a4120e1e24e97e97562591",
+    "name": "Henrique",
+    "cpf": "13151190571",
+    "email": "henriqueferreira.fox@gmail.com",
+    "phone": "5534988914708",
+    "birthdate": "25/02/2006",
+    "address": {
+      "cep": "38740188",
+      "street": "Rua Cesário Alvim",
+      "number": 156,
+      "complement": "Do lado da árvore",
+      "neighborhood": "São Vicente",
+      "city": "Patrocínio",
+      "state": "Minas Gerais"
+    }
+  }
+]
