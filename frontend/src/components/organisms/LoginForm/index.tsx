@@ -62,6 +62,9 @@ export default function LoginForm() {
       const account = await AccountAPI.auth(email.value, password.value);
       login(account);
     } catch (err: any) {
+      if(err.statusCode === 401) {
+        return setErrorMessage("Credenciais inválidas");
+      }
       setErrorMessage(err.message);
     }
   }
