@@ -22,6 +22,13 @@ export default function UserItem({ user }: {user: IUser}) {
     openModalButton.click();
   }
 
+  function handleDeleteClick() {
+    setModalUser(user);
+
+    const openModalButton = document.querySelector("#modal-delete-user-toggle") as HTMLButtonElement;
+    openModalButton.click();
+  }
+
   const { name, email, phone, birthdate } = user;
   return (
     <tr>
@@ -47,7 +54,7 @@ export default function UserItem({ user }: {user: IUser}) {
           <i className="fas fa-pencil-alt" />
           Editar
         </a>
-        <a className="btn btn-danger btn-sm" href="#">
+        <a className="btn btn-danger btn-sm" href="#" onClick={handleDeleteClick}>
           <i className="fas fa-trash" />
           Deletar
         </a>

@@ -3,13 +3,20 @@ import CreateUserModal from "@/components/organisms/Modal_CreateUser";
 import UserMap from "@/components/molecules/UserMap";
 import ViewUserModal from "../Modal_ViewUser";
 import ModalEditUser from "../Modal_EditUser";
+import ModalDeleteUser from "../Modal_DeleteUser";
+import Input from "@/components/atoms/Input";
+import { useUserStore } from "@/store/user";
 
 export default function UsersDashboard() {
+  const searchValue = useUserStore((state) => state.searchValue);
+  const setSearchValue = useUserStore((state) => state.setSearchValue);
+
   return (
     <div className="content-wrapper">
       <CreateUserModal />
       <ViewUserModal />
       <ModalEditUser />
+      <ModalDeleteUser />
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
@@ -29,6 +36,13 @@ export default function UsersDashboard() {
                   + Criar Usuário
                 </PrimaryButton>
               </div>
+            </div>
+            <div className="col-sm-4 mt-2 float-sm-left">
+              <Input
+                placeholder="Buscar..."
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
+              />
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ type State = {
 type Action = {
   addUser: (user: IUser) => void;
   editUser: (user: IUser) => void;
+  deleteUser: (userId: string) => void;
   setUsers: (users: IUser[]) => void;
   setSearchValue: (searchValue: string) => void;
   setLoading: (loading: boolean) => void;
@@ -22,10 +23,14 @@ export const useUserStore = create<State & Action>((set) => ({
   searchValue: "",
   loading: true,
   error: "",
-  addUser: (user) => set((state) => ({ users: [...state.users, user] }), true),
+  addUser: (user) => set((state) => ({ users: [...state.users, user] })),
   editUser: (user) =>
     set((state) => ({
       users: [user, ...state.users.filter((userIn) => userIn._id !== user._id)],
+    })),
+  deleteUser: (userId) =>
+    set((state) => ({
+      users: state.users.filter((user) => user._id !== userId),
     })),
   setUsers: (users) => set({ users }),
   setSearchValue: (searchValue) => set({ searchValue }),

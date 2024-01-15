@@ -38,7 +38,7 @@ export default function Modal({ id, title, children, button }: IModal) {
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div className="modal-body overflow-auto" style={{ height: "70vh" }}>
+          <div className="modal-body overflow-auto" style={{ maxHeight: "70vh" }}>
             {children}
           </div>
           <div className="modal-footer justify-content-between">
@@ -53,7 +53,7 @@ export default function Modal({ id, title, children, button }: IModal) {
             {button && (
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`btn ${button.type ? `btn-${button.type}` : "btn-primary"}`}
                 onClick={handleButtonClick}
               >
                 {button.label}

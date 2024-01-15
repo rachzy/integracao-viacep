@@ -17,7 +17,7 @@ export default function DashboardHome() {
       setLoading(false);
     }
     fetchUsers();
-  }, [setLoading, setUsers]);
+  }, []);
 
   return <DashboardTemplate loading={loading} />;
 }

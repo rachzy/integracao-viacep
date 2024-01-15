@@ -123,7 +123,7 @@ export default function UserModalInputGroup({
               ...currentValue.address,
               street: logradouro,
               complement: complemento,
-              neighboorhood: bairro,
+              neighborhood: bairro,
               city: localidade,
               state: uf,
             },

@@ -24,4 +24,7 @@ export const UserAPI = {
       ...user,
     };
   },
+  delete: async (userId: string): Promise<boolean> => {
+    return true;
+  },
 };
