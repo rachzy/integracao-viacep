@@ -9,7 +9,10 @@ export default function UserMap() {
     return users.map((user) => {
       if (
         searchValue &&
-        !user.name.toLocaleLowerCase().includes(searchValue.trim().toLowerCase())
+        !user.name
+          .toLocaleLowerCase()
+          .includes(searchValue.trim().toLowerCase()) &&
+        !user.cpf.toLocaleLowerCase().includes(searchValue.trim().toLowerCase())
       )
         return null;
       return <UserItem key={user._id} user={user} />;
@@ -22,9 +25,9 @@ export default function UserMap() {
         <tr>
           <th style={{ width: "20%" }}>Nome</th>
           <th style={{ width: "20%" }}>Email</th>
-          <th style={{ width: "20%" }}>Telefone</th>
-          <th style={{ width: "20%" }}>Idade</th>
-          <th style={{ width: "20%" }}>Ações</th>
+          <th style={{ width: "15%" }}>CPF</th>
+          <th style={{ width: "15%" }}>Idade</th>
+          <th style={{ width: "25%" }}>Ações</th>
         </tr>
       </thead>
       <tbody>{mapUsers()}</tbody>

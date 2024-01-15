@@ -24,7 +24,14 @@ export default function UsersDashboard() {
               <h1>Usuários</h1>
             </div>
             <div className="col-sm-6">
-              <div className="breadcrumb float-sm-right">
+              <div className="col-sm-6 float-sm-left">
+                <Input
+                  placeholder="Buscar..."
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  value={searchValue}
+                />
+              </div>
+              <div className="col-sm-6 float-sm-right">
                 <PrimaryButton
                   onClick={() => {
                     const button = document.querySelector(
@@ -36,13 +43,6 @@ export default function UsersDashboard() {
                   + Criar Usuário
                 </PrimaryButton>
               </div>
-            </div>
-            <div className="col-sm-4 mt-2 float-sm-left">
-              <Input
-                placeholder="Buscar..."
-                onChange={(e) => setSearchValue(e.target.value)}
-                value={searchValue}
-              />
             </div>
           </div>
         </div>
