@@ -15,8 +15,8 @@ export const createUserPipe = z
     email: z.string().email(),
     phone: z
       .string()
-      .min(12)
-      .max(14)
+      .min(10)
+      .max(16)
       .refine((str) => !isNaN(parseInt(str))),
     address: z.object({
       street: z.string().max(128),
