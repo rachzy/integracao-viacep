@@ -15,8 +15,8 @@ export class User {
   @Column({ length: 11 })
   cpf: string;
 
-  @Column('date')
-  birthdate: Date;
+  @Column({ length: 11 })
+  birthdate: string;
 
   @Column({ length: 128 })
   email: string;

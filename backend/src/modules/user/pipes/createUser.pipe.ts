@@ -7,7 +7,7 @@ export const createUserPipe = z
       .string()
       .length(11)
       .refine((str) => !isNaN(parseInt(str))),
-    birthDate: z.coerce.date().refine((str) => {
+    birthdate: z.coerce.date().refine((str) => {
       const date = new Date(str);
       const today = new Date();
       return date <= today;

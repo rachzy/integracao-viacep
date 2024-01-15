@@ -59,14 +59,14 @@ export class AccountService {
   async findAccountById(id: string): Promise<Account> {
     return await this.accountRepository.findOne({
       where: { _id: new ObjectId(id) },
-      select: { ...RetrievedAccount },
+      select: Object.keys(RetrievedAccount) as unknown,
     });
   }
 
   async findAccountByEmail(email: string): Promise<Account> {
     return await this.accountRepository.findOne({
       where: { email },
-      select: { _id: true, email: true },
+      select: ['_id', 'email'],
     });
   }
 }
