@@ -74,7 +74,7 @@ export default function ViewUserModal() {
     return data.map((item) => (
       <div key={item.label}>
         <label>{item.label}</label>
-        <p>{item.value}</p>
+        <p>{item.value?.toString() || ""}</p>
       </div>
     ));
   }

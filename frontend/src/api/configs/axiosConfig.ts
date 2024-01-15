@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV;
 const baseUrl = {
   development: "http://localhost:3000/api",
   test: "http://localhost:3000/api",
-  production: "https://api.example.com",
+  production: "https://viacep-backend.onrender.com/api",
 };
 
 export const api = Axios.create({
