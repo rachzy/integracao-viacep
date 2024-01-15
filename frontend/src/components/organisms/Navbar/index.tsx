@@ -12,8 +12,6 @@ export default function Navbar() {
     logout();
   }
 
-  console.log(account);
-
   return (
     <div className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
