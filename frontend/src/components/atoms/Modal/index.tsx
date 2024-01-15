@@ -1,11 +1,12 @@
 import { IModal } from "@/interfaces/Modal";
 import { useState } from "react";
+import PrimaryButton from "../PrimaryButton";
 
 export default function Modal({ id, title, children, button }: IModal) {
   const [active, setActive] = useState(false);
 
   async function handleButtonClick() {
-    if(!button) return;
+    if (!button) return;
     if (!button.onClick) return setActive(false);
 
     const result = await button.onClick();
@@ -38,7 +39,10 @@ export default function Modal({ id, title, children, button }: IModal) {
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div className="modal-body overflow-auto" style={{ maxHeight: "70vh" }}>
+          <div
+            className="modal-body overflow-auto"
+            style={{ maxHeight: "70vh" }}
+          >
             {children}
           </div>
           <div className="modal-footer justify-content-between">
@@ -51,13 +55,16 @@ export default function Modal({ id, title, children, button }: IModal) {
               Fechar
             </button>
             {button && (
-              <button
-                type="button"
-                className={`btn ${button.type ? `btn-${button.type}` : "btn-primary"}`}
-                onClick={handleButtonClick}
-              >
-                {button.label}
-              </button>
+              <div className="6-cl">
+                <PrimaryButton
+                  className={`btn ${
+                    button.type ? `btn-${button.type}` : "btn-primary"
+                  }`}
+                  onClick={handleButtonClick}
+                >
+                  {button.label}
+                </PrimaryButton>
+              </div>
             )}
           </div>
         </div>

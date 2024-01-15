@@ -40,9 +40,12 @@ export default function LoginForm() {
       password: { ...currentValue.password, error: false },
     }));
 
+    let canKeep = true;
+
     formInputs.forEach((input: "email" | "password") => {
       if (inputs[input].value) return;
 
+      canKeep = false;
       setErrorMessage("Por favor, preencha todos os campos.");
 
       setInputs((currentValue) => ({
@@ -51,10 +54,16 @@ export default function LoginForm() {
       }));
     });
 
+    if (!canKeep) return;
+
     const { email, password } = inputs;
 
-    const account = await AccountAPI.auth(email.value, password.value);
-    login(account);
+    try {
+      const account = await AccountAPI.auth(email.value, password.value);
+      login(account);
+    } catch (err: any) {
+      setErrorMessage(err.message);
+    }
   }
 
   return (

@@ -1,30 +1,40 @@
 import { IUser } from "@/interfaces/User";
 
-import users from "./dummy.json";
+import { api } from "./configs/axiosConfig";
 
 export const UserAPI = {
   getAll: async (): Promise<IUser[]> => {
-    return users;
-  },
-  getUserById: async (userId: string): Promise<IUser | null> => {
-    return users.find((user) => user._id === userId) || null;
+    const { data } = await api.request({
+      url: "user/getAll",
+      method: "GET",
+    });
+    return data;
   },
   create: async (user: IUser): Promise<IUser> => {
-    const createdUser: IUser = {
-      _id: Date.now().toString(),
-      author: Date.now().toString(),
-      ...user,
-    };
-    return createdUser;
+    const { data } = await api.request({
+      url: "user/create",
+      method: "POST",
+      data: user,
+    });
+
+    return data;
   },
   edit: async (userId: string, user: IUser): Promise<IUser> => {
-    return {
-      _id: userId,
-      author: users.find((user) => user._id === userId)?.author,
-      ...user,
-    };
+    const { _id, author, ...retrievedUser } = user;
+    const { data } = await api.request({
+      url: `user/edit?id=${userId}`,
+      method: "PUT",
+      data: retrievedUser,
+    });
+
+    return data;
   },
   delete: async (userId: string): Promise<boolean> => {
+    await api.request({
+      url: `user/delete?id=${userId}`,
+      method: "DELETE",
+    });
+
     return true;
   },
 };

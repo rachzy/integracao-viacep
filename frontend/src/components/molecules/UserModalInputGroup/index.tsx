@@ -35,7 +35,7 @@ export default function UserModalInputGroup({
   modalMetadata,
 }: IProps) {
   const [errorValues, setErrorValues] = useState<IErrorValue[]>([]);
-
+  const [globalErrorValue, setGlobalErrorValue] = useState("");
   const inputs: IModalInput[] = [
     {
       name: "name",
@@ -304,17 +304,28 @@ export default function UserModalInputGroup({
     if (errorValues.length > 0) return true;
 
     if (handleClick) {
-      await handleClick();
+      try {
+        await handleClick();
+        return false;
+      } catch (err: any) {
+        console.log(err);
+        setGlobalErrorValue(err.message);
+        return true;
+      }
     }
 
     return false;
   }
+
   return (
     <Modal
       id={modalMetadata.id}
       title={modalMetadata.title}
       button={{ label: modalMetadata.buttonLabel, onClick: handleButtonClick }}
     >
+      {globalErrorValue && (
+        <p className="text-danger text-center">{globalErrorValue}</p>
+      )}
       {mapInputs()}
     </Modal>
   );

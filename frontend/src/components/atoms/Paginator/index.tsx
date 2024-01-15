@@ -15,7 +15,7 @@ export default function Paginator({
 }: IProps) {
   function mapPages() {
     const elements = [];
-    for (let i = 0; i <= (totalAmount - 1); i += amountPerPage) {
+    for (let i = 0; i <= totalAmount - 1; i += amountPerPage) {
       elements.push(i);
     }
 
@@ -50,7 +50,8 @@ export default function Paginator({
           aria-live="polite"
         >
           Mostrando de {(currentPage + 1) * amountPerPage - amountPerPage + 1} a{" "}
-          {Math.min(amountPerPage * (currentPage + 1), totalAmount)} de {totalAmount} resultados
+          {Math.min(amountPerPage * (currentPage + 1), totalAmount)} de{" "}
+          {totalAmount} resultados
         </div>
       </div>
       <div className="col-sm-12 col-md-12">
@@ -71,13 +72,14 @@ export default function Paginator({
                 className="page-link"
                 onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
               >
-                Previous
+                Anterior
               </a>
             </li>
             {mapPages()}
             <li
               className={`paginate_button page-item next ${
-                currentPage === Math.round(totalAmount / amountPerPage) &&
+                (totalAmount / amountPerPage <= 1 ||
+                  currentPage === Math.round(totalAmount / amountPerPage)) &&
                 "disabled"
               }`}
               id="example2_next"
@@ -95,7 +97,7 @@ export default function Paginator({
                   )
                 }
               >
-                Next
+                Próximo
               </a>
             </li>
           </ul>

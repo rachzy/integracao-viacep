@@ -1,6 +1,6 @@
+import Loader from "@/components/atoms/Loader";
 import Navbar from "@/components/organisms/Navbar";
 import UsersDashboard from "@/components/organisms/Users_Dashboard";
-import { CircularProgress } from "@mui/material";
 
 interface IProps {
   loading: boolean;
@@ -8,7 +8,7 @@ interface IProps {
 
 export default function DashboardTemplate({ loading }: IProps) {
   if (loading) {
-    return <CircularProgress />;
+    return <Loader />;
   }
   return (
     <div className="hold-transition sidebar-full" style={{ height: "100vh" }}>
