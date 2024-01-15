@@ -26,8 +26,8 @@ export default function ViewUserModal() {
       value: user?.phone,
     },
     {
-      label: "Data de Aniversário",
-      value: user?.birthdate,
+      label: "Data de Nascimento",
+      value: user?.birthdate ? formatDate(new Date(user.birthdate)) : null,
     },
     {
       label: "Idade",
