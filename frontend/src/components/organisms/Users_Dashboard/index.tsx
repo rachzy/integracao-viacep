@@ -1,13 +1,15 @@
 import PrimaryButton from "@/components/atoms/PrimaryButton";
-import CreateUserModal from "@/components/organisms/CreateUserModal";
+import CreateUserModal from "@/components/organisms/Modal_CreateUser";
 import UserMap from "@/components/molecules/UserMap";
-import ViewUserModal from "../ViewUserModal";
+import ViewUserModal from "../Modal_ViewUser";
+import ModalEditUser from "../Modal_EditUser";
 
 export default function UsersDashboard() {
   return (
     <div className="content-wrapper">
       <CreateUserModal />
       <ViewUserModal />
+      <ModalEditUser />
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">

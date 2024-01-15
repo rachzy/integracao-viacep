@@ -17,4 +17,11 @@ export const UserAPI = {
     };
     return createdUser;
   },
+  edit: async (userId: string, user: IUser): Promise<IUser> => {
+    return {
+      _id: userId,
+      author: users.find((user) => user._id === userId)?.author,
+      ...user,
+    };
+  },
 };

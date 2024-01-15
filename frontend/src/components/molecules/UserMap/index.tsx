@@ -17,7 +17,7 @@ export default function UserMap() {
           <th style={{ width: "20%" }}>Nome</th>
           <th style={{ width: "20%" }}>Email</th>
           <th style={{ width: "20%" }}>Telefone</th>
-          <th style={{ width: "20%" }}>Cpf</th>
+          <th style={{ width: "20%" }}>Idade</th>
           <th style={{ width: "20%" }}>Ações</th>
         </tr>
       </thead>

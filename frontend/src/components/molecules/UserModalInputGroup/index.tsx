@@ -153,7 +153,7 @@ export default function UserModalInputGroup({
       max: 255,
     },
     {
-      name: "address.neighboorhood",
+      name: "address.neighborhood",
       label: "Bairro",
       type: "text",
       max: 32,
@@ -186,11 +186,15 @@ export default function UserModalInputGroup({
 
   function mapInputs() {
     return inputs.map((key) => {
-      let value = inputValues[key["name"] as keyof IUser];
+      let value = "";
 
-      if (key["name"].includes(".")) {
-        //@ts-ignore
-        value = inputValues.address[key["name"].split(".")[1] as string];
+      if (inputValues) {
+        value = inputValues[key["name"] as keyof IUser] as string;
+
+        if (key["name"].includes(".")) {
+          //@ts-ignore
+          value = inputValues.address[key["name"].split(".")[1] as string];
+        }
       }
 
       function handleBlur(e: FocusEvent<HTMLInputElement, Element>) {
