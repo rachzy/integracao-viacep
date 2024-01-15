@@ -5,6 +5,7 @@ export default function Modal({ id, title, children, button }: IModal) {
   const [active, setActive] = useState(false);
 
   async function handleButtonClick() {
+    if(!button) return;
     if (!button.onClick) return setActive(false);
 
     const result = await button.onClick();
@@ -49,13 +50,15 @@ export default function Modal({ id, title, children, button }: IModal) {
             >
               Fechar
             </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleButtonClick}
-            >
-              {button.label}
-            </button>
+            {button && (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleButtonClick}
+              >
+                {button.label}
+              </button>
+            )}
           </div>
         </div>
         {/* /.modal-content */}

@@ -1,38 +1,39 @@
-import Input from "@/components/atoms/Input";
-import Modal from "@/components/atoms/Modal";
+import { IModalInput } from "@/interfaces/ModalInput";
 import { IUser } from "@/interfaces/User";
-import { ChangeEvent, FocusEvent, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FocusEvent,
+  SetStateAction,
+  useState,
+} from "react";
 
 import Axios from "axios";
-import { IModalInput } from "@/interfaces/ModalInput";
-import { useUserStore } from "@/store/user";
-import { UserAPI } from "@/api/UserAPI";
+import Input from "@/components/atoms/Input";
+import Modal from "@/components/atoms/Modal";
 
 interface IErrorValue {
   name: keyof IUser;
   value: string;
 }
 
-export default function CreateUserModal() {
-  const addUser = useUserStore((state) => state.addUser);
+interface IProps {
+  handleClick: () => Promise<void>;
+  inputValues: IUser;
+  setInputValues: Dispatch<SetStateAction<IUser>>;
+  modalMetadata: {
+    id: string;
+    title: string;
+    buttonLabel: string;
+  };
+}
 
-  const [inputValues, setInputValues] = useState<IUser>({
-    name: "",
-    email: "",
-    cpf: "",
-    phone: "",
-    birthdate: "",
-    address: {
-      street: "",
-      number: 0,
-      complement: "",
-      neighborhood: "",
-      city: "",
-      state: "",
-      cep: "",
-    },
-  });
-
+export default function UserModalInputGroup({
+  handleClick,
+  inputValues,
+  setInputValues,
+  modalMetadata,
+}: IProps) {
   const [errorValues, setErrorValues] = useState<IErrorValue[]>([]);
 
   const inputs: IModalInput[] = [
@@ -298,16 +299,17 @@ export default function CreateUserModal() {
 
     if (errorValues.length > 0) return true;
 
-    const newUser = await UserAPI.create(inputValues);
-    addUser(newUser);
+    if (handleClick) {
+      await handleClick();
+    }
 
     return false;
   }
   return (
     <Modal
-      id="modal-create-user"
-      title={"Novo usuário"}
-      button={{ label: "Salvar usuário", onClick: handleButtonClick }}
+      id={modalMetadata.id}
+      title={modalMetadata.title}
+      button={{ label: modalMetadata.buttonLabel, onClick: handleButtonClick }}
     >
       {mapInputs()}
     </Modal>

@@ -6,11 +6,10 @@ export default function UserMap() {
 
   function mapUsers() {
     return users.map((user) => {
-      return <UserItem key={user._id} {...user} />;
+      return <UserItem key={user._id} user={user} />;
     });
   }
 
-  console.log(users);
   return (
     <table className="table table-striped projects">
       <thead>

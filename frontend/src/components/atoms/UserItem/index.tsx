@@ -1,6 +1,17 @@
 import { IUser } from "@/interfaces/User";
+import { useModalStore } from "@/store/modal";
 
-export default function UserItem({ name, email, phone, cpf }: Partial<IUser>) {
+export default function UserItem({ user }: {user: IUser}) {
+  const setModalUser = useModalStore((state) => state.setUser);
+
+  function handleViewClick() {
+    setModalUser(user);
+
+    const openModalButton = document.querySelector("#modal-view-user-toggle") as HTMLButtonElement;
+    openModalButton.click();
+  }
+
+  const { name, email, phone, cpf } = user;
   return (
     <tr>
       <td>{name}</td>
@@ -14,7 +25,7 @@ export default function UserItem({ name, email, phone, cpf }: Partial<IUser>) {
         <a>{cpf}</a>
       </td>
       <td className="project-actions text-right">
-        <a className="btn btn-primary btn-sm m-1" href="#">
+        <a className="btn btn-primary btn-sm m-1" href="#" onClick={handleViewClick}>
           <i className="fas fa-folder" />
           Ver
         </a>
