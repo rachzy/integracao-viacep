@@ -4,6 +4,7 @@ import NavTitle from "@/components/atoms/NavTitle";
 import { useAuthStore } from "@/store/auth";
 
 export default function Navbar() {
+  const account = useAuthStore((state) => state.account);
   const logout = useAuthStore((state) => state.logout);
 
   async function handleLogoutButtonClick() {
@@ -11,13 +12,15 @@ export default function Navbar() {
     logout();
   }
 
+  console.log(account);
+
   return (
     <div className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
       {/* Sidebar */}
       <div className="sidebar">
         {/* Sidebar user (optional) */}
-        <NavTitle username="rach" />
+        <NavTitle username={account.username || ""} />
         {/* Sidebar Menu */}
         <nav className="mt-2">
           <ul

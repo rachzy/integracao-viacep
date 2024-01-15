@@ -28,6 +28,23 @@ export default function CreateUserModal() {
   async function handleClick() {
     const newUser = await UserAPI.create(inputValues);
     addUser(newUser);
+
+    setInputValues({
+      name: "",
+      email: "",
+      cpf: "",
+      phone: "",
+      birthdate: "",
+      address: {
+        street: "",
+        number: 0,
+        complement: "",
+        neighborhood: "",
+        city: "",
+        state: "",
+        cep: "",
+      },
+    });
   }
 
   return (

@@ -6,6 +6,7 @@ import ModalEditUser from "../Modal_EditUser";
 import ModalDeleteUser from "../Modal_DeleteUser";
 import Input from "@/components/atoms/Input";
 import { useUserStore } from "@/store/user";
+import ModalExportUsers from "../Modal_ExportUsers";
 
 export default function UsersDashboard() {
   const searchValue = useUserStore((state) => state.searchValue);
@@ -17,6 +18,7 @@ export default function UsersDashboard() {
       <ViewUserModal />
       <ModalEditUser />
       <ModalDeleteUser />
+      <ModalExportUsers />
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
@@ -41,6 +43,19 @@ export default function UsersDashboard() {
                   }}
                 >
                   + Criar Usuário
+                </PrimaryButton>
+              </div>
+              <div className="col-sm-6 float-sm-right mt-2">
+                <PrimaryButton
+                  className="btn-danger"
+                  onClick={() => {
+                    const button = document.querySelector(
+                      "#modal-export-users-toggle"
+                    ) as HTMLButtonElement;
+                    button.click();
+                  }}
+                >
+                  Exportar
                 </PrimaryButton>
               </div>
             </div>

@@ -5,10 +5,7 @@ import { createAccount } from './dto/create-account.dto';
 import { Account } from './entities/account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SaveAccount } from './dto/save-account.dto';
-import {
-  RetrievedAccount,
-  RetrievedAccountDto,
-} from './dto/retrieved-account.dto';
+import { RetrievedAccountDto } from './dto/retrieved-account.dto';
 import { hash, compare, genSaltSync } from 'bcrypt';
 
 @Injectable()
@@ -59,7 +56,7 @@ export class AccountService {
   async findAccountById(id: string): Promise<Account> {
     return await this.accountRepository.findOne({
       where: { _id: new ObjectId(id) },
-      select: Object.keys(RetrievedAccount) as unknown,
+      select: ['_id', 'username', 'email'],
     });
   }
 

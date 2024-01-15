@@ -54,7 +54,7 @@ export default function Paginator({
           {totalAmount} resultados
         </div>
       </div>
-      <div className="col-sm-12 col-md-12">
+      <div className="col-sm-12 col-md-12 mt-2">
         <div
           className="dataTables_paginate paging_simple_numbers"
           id="example2_paginate"
