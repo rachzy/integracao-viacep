@@ -3,19 +3,21 @@
 import { UserAPI } from "@/api/UserAPI";
 import DashboardTemplate from "@/components/templates/Dashboard";
 import { useUserStore } from "@/store/user";
+import { useEffect } from "react";
 
 export default function DashboardHome() {
-  const users = useUserStore((state) => state.users);
   const loading = useUserStore((state) => state.loading);
   const setUsers = useUserStore((state) => state.setUsers);
   const setLoading = useUserStore((state) => state.setLoading);
 
-  async function fetchUsers() {
-    const fetchedUsers = await UserAPI.getAll();
-    setUsers(fetchedUsers);
-    setLoading(false);
-  }
-  fetchUsers();
+  useEffect(() => {
+    async function fetchUsers() {
+      const fetchedUsers = await UserAPI.getAll();
+      setUsers(fetchedUsers);
+      setLoading(false);
+    }
+    fetchUsers();
+  }, [setLoading, setUsers]);
 
-  return <DashboardTemplate users={users} loading={loading} />;
+  return <DashboardTemplate loading={loading} />;
 }

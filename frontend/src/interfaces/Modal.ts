@@ -4,6 +4,6 @@ export interface IModal {
   children: React.ReactNode;
   button: {
     label: string;
-    onClick?: () => void;
+    onClick?: () => boolean | Promise<boolean>;
   };
 }

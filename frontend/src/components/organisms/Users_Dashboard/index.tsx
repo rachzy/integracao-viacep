@@ -1,9 +1,8 @@
 import PrimaryButton from "@/components/atoms/PrimaryButton";
 import CreateUserModal from "@/components/molecules/CreateUserModal";
 import UserMap from "@/components/molecules/UserMap";
-import { IUser } from "@/interfaces/User";
 
-export default function UsersDashboard({ users }: { users: IUser[] }) {
+export default function UsersDashboard() {
   return (
     <div className="content-wrapper">
       <CreateUserModal />
@@ -16,8 +15,12 @@ export default function UsersDashboard({ users }: { users: IUser[] }) {
             <div className="col-sm-6">
               <div className="breadcrumb float-sm-right">
                 <PrimaryButton
-                  data-toggle="modal"
-                  data-target="#modal-create-user"
+                  onClick={() => {
+                    const button = document.querySelector(
+                      "#modal-create-user-toggle"
+                    ) as HTMLButtonElement;
+                    button.click();
+                  }}
                 >
                   + Criar Usuário
                 </PrimaryButton>
@@ -32,7 +35,7 @@ export default function UsersDashboard({ users }: { users: IUser[] }) {
             <h3 className="card-title">Usuários</h3>
           </div>
           <div className="card-body p-0">
-            <UserMap users={users} />
+            <UserMap />
           </div>
         </div>
       </section>

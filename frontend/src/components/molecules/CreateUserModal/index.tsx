@@ -1,9 +1,21 @@
 import Input from "@/components/atoms/Input";
 import Modal from "@/components/atoms/Modal";
 import { IUser } from "@/interfaces/User";
-import { useState } from "react";
+import { ChangeEvent, FocusEvent, useState } from "react";
+
+import Axios from "axios";
+import { IModalInput } from "@/interfaces/ModalInput";
+import { useUserStore } from "@/store/user";
+import { UserAPI } from "@/api/UserAPI";
+
+interface IErrorValue {
+  name: keyof IUser;
+  value: string;
+}
 
 export default function CreateUserModal() {
+  const addUser = useUserStore((state) => state.addUser);
+
   const [inputValues, setInputValues] = useState<IUser>({
     name: "",
     email: "",
@@ -21,28 +33,50 @@ export default function CreateUserModal() {
     },
   });
 
-  const inputs = [
+  const [errorValues, setErrorValues] = useState<IErrorValue[]>([]);
+
+  const inputs: IModalInput[] = [
     {
       name: "name",
       label: "Nome",
       type: "text",
+      min: 3,
+      max: 255,
     },
     {
       name: "email",
       label: "Email",
       type: "email",
+      min: 8,
+      max: 255,
+      errorMessage: "Email Inválido",
+      refine: () => {
+        const value = inputValues.email;
+        return Boolean(value.includes(".") && value.includes("@"));
+      },
     },
     {
       name: "cpf",
       label: "CPF",
       type: "text",
-      placeholder: "000.000.000-00",
+      placeholder: "11122233344",
+      min: 11,
+      max: 11,
+      errorMessage: "CPF Inválido",
+      refine: () => {
+        const value = inputValues.cpf;
+        return Boolean(
+          !isNaN(parseInt(value)) && parseInt(value).toString().length === 11
+        );
+      },
     },
     {
       name: "phone",
       label: "Telefone",
       type: "text",
-      placeholder: "(00) 00000-0000",
+      placeholder: "34988414702",
+      min: 11,
+      max: 14,
     },
     {
       name: "birthdate",
@@ -51,73 +85,229 @@ export default function CreateUserModal() {
       placeholder: "00/00/0000",
     },
     {
-      name: "cep",
+      name: "address.cep",
       label: "CEP",
       type: "text",
-      placeholder: "00000-000",
+      placeholder: "38740188",
+      min: 8,
+      max: 8,
+      onBlur: async (e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        if (!value || isNaN(parseInt(value))) return;
+
+        try {
+          const { data } = await Axios.get(
+            `https://viacep.com.br/ws/${value}/json/`
+          );
+
+          if (!data) return;
+
+          const {
+            logradouro,
+            complemento,
+            bairro,
+            localidade,
+            uf,
+          }: {
+            logradouro: string;
+            complemento: string;
+            bairro: string;
+            localidade: string;
+            uf: string;
+          } = data;
+
+          setInputValues((currentValue) => ({
+            ...currentValue,
+            address: {
+              ...currentValue.address,
+              street: logradouro,
+              complement: complemento,
+              neighboorhood: bairro,
+              city: localidade,
+              state: uf,
+            },
+          }));
+        } catch (e) {
+          //
+        }
+      },
     },
     {
       name: "address.street",
       label: "Endereço",
       type: "text",
       placeholder: "Nome da rua ou avenida",
+      max: 128,
     },
     {
       name: "address.number",
       label: "Número",
       type: "number",
+      max: 9999,
     },
     {
       name: "address.complement",
       label: "Complemento",
       type: "text",
+      max: 255,
     },
     {
       name: "address.neighboorhood",
       label: "Bairro",
       type: "text",
+      max: 32,
     },
     {
       name: "address.city",
       label: "Cidade",
       type: "text",
+      max: 32,
     },
     {
       name: "address.state",
       label: "Estado",
       type: "text",
+      max: 32,
     },
   ];
 
+  function getErrorValue(inputName: string) {
+    const error = errorValues.find((error) => error.name === inputName);
+    if (!error) {
+      return null;
+    }
+    return <p className="text-danger">{error.value}</p>;
+  }
+
+  function clearErrorValue(inputName: string) {
+    setErrorValues(errorValues.filter((error) => error.name !== inputName));
+  }
+
   function mapInputs() {
     return inputs.map((key) => {
-      const value =
-        inputValues[
-          (key["name"] as keyof IUser) ||
-            inputValues["address"][key["name"] as keyof IUser["address"]]
-        ];
+      let value = inputValues[key["name"] as keyof IUser];
+
+      if (key["name"].includes(".")) {
+        //@ts-ignore
+        value = inputValues.address[key["name"].split(".")[1] as string];
+      }
+
+      function handleBlur(e: FocusEvent<HTMLInputElement, Element>) {
+        clearErrorValue(key.name);
+
+        if (!key.onBlur) return;
+        key.onBlur(e);
+      }
+
       return (
         <div key={key.name}>
-          <label htmlFor={key.name}>{key.label}</label>
+          <label htmlFor={key.name}>(*) {key.label}</label>
           <Input
+            className={getErrorValue(key.name) ? "border border-danger" : ""}
             type={key.type}
             id={key.name}
             placeholder={key.placeholder}
-            onChange={(e) =>
-              setInputValues({ ...inputValues, [key.name]: e.target.value })
-            }
+            onChange={(e) => {
+              if (!key.name.includes(".")) {
+                return setInputValues({
+                  ...inputValues,
+                  [key.name]: e.target.value,
+                });
+              }
+
+              setInputValues({
+                ...inputValues,
+                address: {
+                  ...inputValues.address,
+                  [key.name.split(".")[1]]: e.target.value,
+                },
+              });
+            }}
+            onBlur={(e) => handleBlur(e)}
+            minLength={key.min}
+            maxLength={key.max}
+            max={key.max}
             //@ts-ignore
             value={value}
           />
+          {getErrorValue(key.name)}
         </div>
       );
     });
+  }
+
+  function validateFields(): boolean {
+    setErrorValues([]);
+    let canInsert = true;
+
+    inputs.forEach((key) => {
+      const value =
+        (inputValues[key.name as keyof IUser] as string) ||
+        //@ts-ignore
+        (inputValues.address[key.name.split(".")[1] as keyof IUser] as string);
+
+      if (!value) {
+        canInsert = false;
+        return setErrorValues((currentValue) => [
+          ...currentValue,
+          {
+            name: key.name as keyof IUser,
+            value: "Campo obrigatório",
+          },
+        ]);
+      }
+
+      const input = inputs.find((input) => input.name === key.name);
+
+      if (!input) return;
+      if (
+        value.length < (input.min ? input.min : 1) ||
+        value.length > (input.max ? input.max : 255)
+      ) {
+        canInsert = false;
+        return setErrorValues((currentValue) => [
+          ...currentValue,
+          {
+            name: key.name as keyof IUser,
+            value: `Esse campo precisa ter no mínimo ${
+              input.min || 1
+            } caracteres`,
+          },
+        ]);
+      }
+
+      if (input.refine) {
+        if (!input.refine()) {
+          canInsert = false;
+          return setErrorValues((currentValue) => [
+            ...currentValue,
+            {
+              name: key.name as keyof IUser,
+              value: input.errorMessage || "Valor inválido.",
+            },
+          ]);
+        }
+      }
+    });
+
+    return canInsert;
+  }
+
+  async function handleButtonClick() {
+    if (!validateFields()) return true;
+
+    if (errorValues.length > 0) return true;
+
+    const newUser = await UserAPI.create(inputValues);
+    addUser(newUser);
+
+    return false;
   }
   return (
     <Modal
       id="modal-create-user"
       title={"Novo usuário"}
-      button={{ label: "Salvar usuário" }}
+      button={{ label: "Salvar usuário", onClick: handleButtonClick }}
     >
       {mapInputs()}
     </Modal>

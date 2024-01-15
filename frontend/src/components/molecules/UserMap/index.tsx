@@ -1,12 +1,16 @@
 import UserItem from "@/components/atoms/UserItem";
-import { IUser } from "@/interfaces/User";
+import { useUserStore } from "@/store/user";
 
-export default function UserMap({ users }: { users: IUser[] }) {
+export default function UserMap() {
+  const users = useUserStore((state) => state.users);
+
   function mapUsers() {
     return users.map((user) => {
       return <UserItem key={user._id} {...user} />;
     });
   }
+
+  console.log(users);
   return (
     <table className="table table-striped projects">
       <thead>
